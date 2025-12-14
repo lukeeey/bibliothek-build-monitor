@@ -21,6 +21,8 @@ interface Metadata {
             sha256: string
         }
     }
+    supportedJavaVersions: string[];
+    supportedBedrockVersions: string[];
 }
 
 const uploadFolder = process.env.INPUT_DIR || './uploads/';
@@ -91,6 +93,8 @@ async function handleMetadata(folder: string, metadata: Metadata) {
     logger.info(`Build: ${metadata.number}`);
     logger.info(`Downloads: ${util.inspect(metadata.downloads)}`);
     logger.info(`Changes: ${util.inspect(metadata.changes)}`);
+    logger.info(`Supported Java Versions: ${metadata.supportedJavaVersions.join(', ')}`);
+    logger.info(`Supported Bedrock Versions: ${metadata.supportedBedrockVersions.join(', ')}`);
 
     logger.info('Inserting build into database');
     await insert(metadata, folder);
@@ -176,7 +180,9 @@ const insert = async (metadata: Metadata, folder: string) => {
             changes: metadata.changes,
             downloads: metadata.downloads,
             promoted: false,
-            channel: buildChannel
+            channel: buildChannel,
+            supportedJavaVersions: metadata.supportedJavaVersions,
+            supportedBedrockVersions: metadata.supportedBedrockVersions
         });
 
         logger.info(
