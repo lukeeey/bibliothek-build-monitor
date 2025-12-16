@@ -181,8 +181,14 @@ const insert = async (metadata: Metadata, folder: string) => {
             downloads: metadata.downloads,
             promoted: false,
             channel: buildChannel,
-            supportedJavaVersions: metadata.supportedJavaVersions,
-            supportedBedrockVersions: metadata.supportedBedrockVersions
+            metadata: {
+                java: {
+                    versions: metadata.supportedJavaVersions
+                },
+                bedrock: {
+                    versions: metadata.supportedBedrockVersions
+                }
+            }
         });
 
         logger.info(
